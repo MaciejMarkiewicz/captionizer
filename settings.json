@@ -1,0 +1,14 @@
+{
+  "engine": "azure",
+  "engine_settings": {
+    "azure": {
+      "language": "pl-PL",
+      "key": "",
+      "region": "westus"
+    },
+    "google": {
+      "key": "",
+      "language": "pl_PL"
+    }
+  }
+}
