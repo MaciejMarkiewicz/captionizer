@@ -14,12 +14,12 @@ class ViewModel:
 
         self.is_recording = False
         self._audio_path = os.path.join(os.path.dirname(__file__), 'temp', 'recording.wav')
+        self._recording_thread = None
         self._recorder = Recorder(self._audio_path)
         self._recognizer = Recognizer()
-        self._settings = self._load_settings()
-        self._recording_thread = None
         self._settings_path = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir, os.pardir,
                                                             'settings.json'))
+        self._settings = self._load_settings()
 
     def on_record_stop(self):
         self._recorder.stop_recording()
@@ -62,11 +62,12 @@ class ViewModel:
         return self._settings['engine_settings'][engine].get('region', '')
 
     def update_settings(self, values):
+        print(values)
         engine = values['engine']
         device = self.get_sound_devices().index(values['device'])
         language = values['language']
         region = values['region']
-        key = self._settings['key'] if values['key'] is None else values['key']
+        key = values['key'] if values['key'] is not None else self._settings['engine_settings'][engine]['key']
 
         self._settings['engine'] = engine
         self._settings['device'] = device

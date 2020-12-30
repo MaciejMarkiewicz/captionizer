@@ -78,7 +78,7 @@ class GUI:
                   [sg.Text("API key:"), sg.In(key=KEY_INPUT, default_text=DEFAULT_KEY_TEXT)],
                   [sg.Text("Language:"), sg.Drop(self._view_model.possible_languages, key=LANGUAGE_DROP,
                                                  default_value=self._view_model.get_language())],
-                  [sg.Text("Region (optional):"), sg.In(key=REGION_INPUT)],
+                  [sg.Text("Region (optional):"), sg.In(key=REGION_INPUT, default_text=self._view_model.get_region())],
                   [sg.Button(APPLY_BUTTON)]]
 
         window = sg.Window("Preferences", layout)
