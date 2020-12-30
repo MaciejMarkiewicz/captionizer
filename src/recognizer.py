@@ -22,14 +22,21 @@ class Recognizer:
             return recognizer.recognize_google(audio, key=settings['key'] or None, language=settings['language'])
         except sr.UnknownValueError:
             return "ERROR: An error occurred during processing"
+        except sr.RequestError as e:
+            return f"ERROR: An error occurred during processing. Details: {e}"
 
     @staticmethod
     def _recognize_azure(audio_path, settings):
+        if not settings['key']:
+            return "ERROR: No API key provided"
+
         speech_config = speechsdk.SpeechConfig(subscription=settings['key'], region=settings['region'])
         audio_input = speechsdk.AudioConfig(filename=audio_path)
         speech_recognizer = speechsdk.SpeechRecognizer(speech_config=speech_config, audio_config=audio_input,
                                                        language=settings['language'])
 
         result = speech_recognizer.recognize_once()
-        return result.text
 
+        if result.cancellation_details:
+            return result.cancellation_details
+        return result.text

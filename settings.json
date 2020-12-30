@@ -1,5 +1,6 @@
 {
   "engine": "azure",
+  "audio_device": 1,
   "engine_settings": {
     "azure": {
       "language": "pl-PL",
@@ -8,7 +9,7 @@
     },
     "google": {
       "key": "",
-      "language": "pl_PL"
+      "language": "en-US"
     }
   }
 }
