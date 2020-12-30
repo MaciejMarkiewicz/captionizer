@@ -50,25 +50,28 @@ class ViewModel:
     def get_sound_devices(self):
         return self._recorder.get_sound_devices()
 
-    def get_current_engine(self):
+    def get_engine(self):
         return self._settings['engine']
 
-    def get_current_device(self):
+    def get_audio_device(self):
         return self.get_sound_devices()[self._settings['audio_device']]
+
+    def get_result_path(self):
+        return self._settings['out_path']
 
     def get_language(self, engine=None):
         if engine is None:
-            engine = self.get_current_engine()
+            engine = self.get_engine()
         return self._settings['engine_settings'][engine]['language']
 
     def get_region(self, engine=None):
         if engine is None:
-            engine = self.get_current_engine()
+            engine = self.get_engine()
         return self._settings['engine_settings'][engine].get('region', '')
 
     def get_key(self, engine=None):
         if engine is None:
-            engine = self.get_current_engine()
+            engine = self.get_engine()
         return self._settings['engine_settings'][engine].get('key', '')
 
     def update_settings(self, values):
@@ -80,7 +83,7 @@ class ViewModel:
         key = values['key'] if values['key'] is not None else self._settings['engine_settings'][engine]['key']
 
         self._settings['engine'] = engine
-        self._settings['device'] = device
+        self._settings['audio_device'] = device
         self._settings['out_path'] = out_path
         self._settings['engine_settings'][engine]['language'] = language
         self._settings['engine_settings'][engine]['region'] = region
