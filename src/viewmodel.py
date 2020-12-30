@@ -34,12 +34,10 @@ class ViewModel:
             self._recording_thread.start()
 
     def recognize_speech(self, result_callback):
-        self._manage_recording_thread()
+        self._ensure_recording_finished()
         engine = self._settings['engine']
         ThreadPool(processes=1).apply_async(self._recognizer.speech_to_text,
-                                            (self._audio_path,
-                                             engine,
-                                             self._settings['engine_settings'][engine]),
+                                            (self._audio_path, engine, self._settings['engine_settings'][engine]),
                                             callback=result_callback)
 
     def get_sound_devices(self):
@@ -61,6 +59,11 @@ class ViewModel:
             engine = self.get_current_engine()
         return self._settings['engine_settings'][engine].get('region', '')
 
+    def get_key(self, engine=None):
+        if engine is None:
+            engine = self.get_current_engine()
+        return self._settings['engine_settings'][engine].get('key', '')
+
     def update_settings(self, values):
         print(values)
         engine = values['engine']
@@ -77,7 +80,7 @@ class ViewModel:
 
         self._write_settings_to_file(self._settings)
 
-    def _manage_recording_thread(self):
+    def _ensure_recording_finished(self):
         self._recording_thread.join()
         self._recording_thread = None
 

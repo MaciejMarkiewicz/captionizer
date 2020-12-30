@@ -3,7 +3,6 @@ import queue
 
 import sounddevice as sd
 import soundfile as sf
-import numpy  # import needed
 
 
 class Recorder:
@@ -34,4 +33,3 @@ class Recorder:
     @staticmethod
     def get_sound_devices():
         return [device['name'] for device in sd.query_devices()]
-

@@ -15,7 +15,6 @@ DEVICE_DROP = 'device'
 KEY_INPUT = 'key'
 LANGUAGE_DROP = 'language'
 REGION_INPUT = 'region'
-DEFAULT_KEY_TEXT = 'Key is not shown to keep it secure'
 
 
 class GUI:
@@ -75,7 +74,8 @@ class GUI:
                                                      default_value=self._view_model.get_current_device(),
                                                      key=DEVICE_DROP)],
                   [sg.Text("Engine specific settings:")],
-                  [sg.Text("API key:"), sg.In(key=KEY_INPUT, default_text=DEFAULT_KEY_TEXT)],
+                  [sg.Text("API key:"), sg.In(key=KEY_INPUT, default_text=self._view_model.get_key(),
+                                              password_char='*')],
                   [sg.Text("Language:"), sg.Drop(self._view_model.possible_languages, key=LANGUAGE_DROP,
                                                  default_value=self._view_model.get_language())],
                   [sg.Text("Region (optional):"), sg.In(key=REGION_INPUT, default_text=self._view_model.get_region())],
@@ -89,10 +89,8 @@ class GUI:
             if event == ENGINE_DROP:
                 window.find_element(LANGUAGE_DROP).update(self._view_model.get_language(values[ENGINE_DROP]))
                 window.find_element(REGION_INPUT).update(self._view_model.get_region(values[ENGINE_DROP]))
+                window.find_element(KEY_INPUT).update(self._view_model.get_key(values[ENGINE_DROP]))
             elif event == APPLY_BUTTON:
-                if values[KEY_INPUT].strip() == DEFAULT_KEY_TEXT:
-                    values[KEY_INPUT] = None
-
                 self._view_model.update_settings(values)
                 break
             elif event == sg.WIN_CLOSED:
