@@ -15,6 +15,7 @@ DEVICE_DROP = 'device'
 KEY_INPUT = 'key'
 LANGUAGE_DROP = 'language'
 REGION_INPUT = 'region'
+PATH_INPUT = 'path'
 
 
 class GUI:
@@ -60,7 +61,7 @@ class GUI:
 
     def _show_result(self, text):
         self.start_stop_button.update(text=RECORD_BUTTON, disabled=False)
-        sg.Popup(text or EMPTY_RESULT_TEXT, keep_on_top=True)
+        sg.Popup(text or EMPTY_RESULT_TEXT, title="Result", keep_on_top=True)
 
     def _get_recognition_result(self, result):
         self.recognition_result = result
@@ -73,6 +74,7 @@ class GUI:
                   [sg.Text("Sound device:"), sg.Drop(self._view_model.get_sound_devices(), readonly=True,
                                                      default_value=self._view_model.get_current_device(),
                                                      key=DEVICE_DROP)],
+                  [sg.Text("Result path:"), sg.In(disabled=True, key=PATH_INPUT), sg.FolderBrowse()],
                   [sg.Text("Engine specific settings:")],
                   [sg.Text("API key:"), sg.In(key=KEY_INPUT, default_text=self._view_model.get_key(),
                                               password_char='*')],
