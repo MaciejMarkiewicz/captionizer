@@ -7,7 +7,7 @@ and press stop when you want to stop and begin speech recognition."""
 PREFERENCES_MENU = "Preferences"
 RECORD_BUTTON = "Record"
 STOP_RECORD_BUTTON = "Finish recording"
-IN_PROGRESS_BUTTON = "Transcribing..."
+IN_PROGRESS_BUTTON = "Transcribing...\nThis may take a while"
 EMPTY_RESULT_TEXT = "Error: the speech recognition engine could not recognize anything"
 APPLY_BUTTON = "Apply"
 ENGINE_DROP = 'engine'

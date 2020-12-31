@@ -47,6 +47,7 @@ class Recognizer:
             speech_recognizer.stop_continuous_recognition()
             result_callback(self.END_VAL)
 
+            # fix thread not releasing audio file
             speech_recognizer = None
             audio_input = None
 
