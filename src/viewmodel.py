@@ -14,14 +14,14 @@ class ViewModel:
         self.possible_engines = ["azure", "google"]
 
         self.is_recording = False
-        self._audio_path = os.path.join(os.path.dirname(__file__), 'temp', 'recording.wav')
+        self._audio_path = os.path.join(os.path.dirname(__file__), 'temp', 'record', 'rec.wav')
         self._recording_thread = None
-        self._recorder = Recorder(self._audio_path)
-        self._recognizer = Recognizer()
-        self._writer = Writer()
         self._settings_path = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir, os.pardir,
                                                             'settings.json'))
         self._settings = self._load_settings()
+        self._recorder = Recorder(self._audio_path)
+        self._recognizer = Recognizer()
+        self._writer = Writer(self._settings['out_path'])
 
     def on_record_stop(self):
         self._recorder.stop_recording()
@@ -38,14 +38,18 @@ class ViewModel:
     def recognize_speech(self, gui_result_callback):
         self._ensure_recording_finished()
         engine = self._settings['engine']
+        writer = self._writer.write()
+        writer.send(None)  # initialize coroutine
 
         def callback_wrapper(result):
-            result = self._write_result_and_get_preview(result)
-            gui_result_callback(result)
+            if gui_message_on_ended := self._process_partial_result(result, writer):
+                gui_result_callback(gui_message_on_ended)
 
         ThreadPool(processes=1).apply_async(self._recognizer.speech_to_text,
-                                            (self._audio_path, engine, self._settings['engine_settings'][engine]),
-                                            callback=callback_wrapper)
+                                            (self._audio_path,
+                                             engine,
+                                             self._settings['engine_settings'][engine],
+                                             callback_wrapper))
 
     def get_sound_devices(self):
         return self._recorder.get_sound_devices()
@@ -106,7 +110,7 @@ class ViewModel:
         default_settings = {
             'engine': 'azure',
             'audio_device': 0,
-            'out_path': "",
+            'out_path': "./",
             'engine_settings': {
                 'azure': {
                     'language': 'pl-PL',
@@ -127,11 +131,13 @@ class ViewModel:
         with open(self._settings_path, 'w+') as file:
             json.dump(settings, file, indent=2)
 
-    def _write_result_and_get_preview(self, result):
-        if result and isinstance(result, str) and self._settings['out_path']:
-            filename = self._writer.write_result(result, self._settings['out_path'])
-
-            return f"Preview: {result[:50]}...\n" \
-                   f"Transcription written to: {os.path.join(self._settings['out_path'], filename)}"
+    def _process_partial_result(self, result, writer):
+        if result == self._recognizer.END_VAL:
+            filename = self._writer.save_current_document()
+            writer.close()
+            return f"Transcription written to: {os.path.abspath(os.path.join(self._settings['out_path'], filename))}"
+        elif isinstance(result, str):
+            writer.send(result)
         else:
-            return result
+            writer.close()
+            return f"ERROR: {result}"
