@@ -6,6 +6,7 @@ from multiprocessing.pool import ThreadPool
 from model.recognizer import Recognizer
 from model.recorder import Recorder
 from model.writer import Writer
+from model.engines.engine import Engine
 
 
 class ViewModel:
@@ -133,7 +134,7 @@ class ViewModel:
             json.dump(settings, file, indent=2)
 
     def _process_partial_result(self, result, writer):
-        if result == self._recognizer.END_VAL:
+        if result == Engine.END_VAL:
             filename = self._writer.save_current_document()
             writer.close()
             return f"Transcription written to: {os.path.abspath(os.path.join(self._settings['out_path'], filename))}"
