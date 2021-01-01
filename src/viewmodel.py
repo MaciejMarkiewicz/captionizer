@@ -16,8 +16,7 @@ class ViewModel:
         self.is_recording = False
         self._audio_path = os.path.join(os.path.dirname(__file__), 'temp', 'record', 'rec.wav')
         self._recording_thread = None
-        self._settings_path = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir, os.pardir,
-                                                            'settings.json'))
+        self._settings_path = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir, 'settings.json'))
         self._settings = self._load_settings()
         self._recorder = Recorder(self._audio_path)
         self._recognizer = Recognizer()

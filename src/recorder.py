@@ -11,6 +11,8 @@ class Recorder:
         self.recording = False
         self.audio_path = audio_path
 
+        os.makedirs(os.path.split(self.audio_path)[0], exist_ok=True)
+
     def record(self, device, samplerate=16000):
         def _callback(indata, frames, time, status):
             q.put(indata.copy())

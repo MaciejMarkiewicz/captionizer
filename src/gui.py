@@ -40,9 +40,9 @@ class GUI:
             event, values = window.read(timeout=1000)
 
             if event == RECORD_BUTTON:
-                self.handle_main_button()
+                self._handle_main_button()
             elif event == PREFERENCES_MENU:
-                self.show_preferences()
+                self._show_preferences()
             elif event == sg.WIN_CLOSED:
                 break
 
@@ -50,7 +50,7 @@ class GUI:
                 self._show_result(self.recognition_result)
                 self.recognition_result = None
 
-    def handle_main_button(self):
+    def _handle_main_button(self):
         if not self._view_model.is_recording:
             self.start_stop_button.update(text=STOP_RECORD_BUTTON)
             self._view_model.on_record_start()
@@ -66,7 +66,7 @@ class GUI:
     def _get_recognition_result(self, result):
         self.recognition_result = result
 
-    def show_preferences(self):
+    def _show_preferences(self):
         layout = [[sg.Text("Settings:")],
                   [sg.Text("Speech recognition engine:"), sg.Drop(self._view_model.possible_engines, readonly=True,
                                                                   default_value=self._view_model.get_engine(),
