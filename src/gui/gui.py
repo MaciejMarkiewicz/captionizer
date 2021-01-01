@@ -1,5 +1,5 @@
 import PySimpleGUIQt as sg
-from viewmodel import ViewModel
+from viewmodel.viewmodel import ViewModel
 
 WELCOME_TEXT = """Welcome to the Captionizer! 
 Press the "Record" button to start recording your speaker output

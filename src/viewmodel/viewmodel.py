@@ -3,9 +3,9 @@ import os
 import json
 
 from multiprocessing.pool import ThreadPool
-from recognizer import Recognizer
-from recorder import Recorder
-from writer import Writer
+from model.recognizer import Recognizer
+from model.recorder import Recorder
+from model.writer import Writer
 
 
 class ViewModel:
@@ -14,9 +14,11 @@ class ViewModel:
         self.possible_engines = ["azure", "google"]
 
         self.is_recording = False
-        self._audio_path = os.path.join(os.path.dirname(__file__), 'temp', 'record', 'rec.wav')
+        self._audio_path = os.path.normpath(os.path.join(
+            os.path.dirname(__file__), os.pardir, 'temp', 'record', 'rec.wav'))
         self._recording_thread = None
-        self._settings_path = os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir, 'settings.json'))
+        self._settings_path = os.path.normpath(os.path.join(
+            os.path.abspath(__file__), os.pardir, os.pardir, 'settings.json'))
         self._settings = self._load_settings()
         self._recorder = Recorder(self._audio_path)
         self._recognizer = Recognizer()
