@@ -14,11 +14,44 @@ Captionizer enables you to create transcriptions of lectures, online meetings or
 - Transcription is stored to the specified path
 - Be aware that changing your default recording device might result in changing your current online meeting software default settings
 
+
+## UI
+
+Main app window
+
+![image info](./src/examples/images/main.JPG)
+
+Preferences window
+
+![image info](./src/examples/images/preferences.JPG)
+
+Recording
+
+![image info](./src/examples/images/recording.JPG)
+
+Transcribing
+
+![image info](./src/examples/images/transcription.JPG)
+
+Result prompt
+
+![image info](./src/examples/images/result.JPG)
+
+
 ## App architecture
 
 The app was build using the MVVM pattern, with view being the user entry point, and the viewmodel serving as a data source and updating the model.
 The other-way communication is performed using decorator-like callbacks (expanding on top of each other) and asynchronous coroutines,
 e.g. the document writer. Speech recognition engines use the strategy pattern, inheriting from the abstract Engine class.
+
+## External libraries
+
+Libraries used are listed in the `requirements.txt` file:
+
+- Azure cognitive services and Speech Recognition - as speech recognition engines
+- sounddevice, soundfile and PyAudio - to handle recording and managing audio inputs
+- python-docx - to create transcription docx files
+- PySimpleGUIQt - for GUI
 
 
 ## Tests and accuracy
