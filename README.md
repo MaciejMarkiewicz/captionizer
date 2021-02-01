@@ -1,57 +1,8 @@
 # Captionizer
 
-Captionizer enables you to create transcriptions of lectures, online meetings or videos with a help of speech recognition engines.
-
-
-## Usage
-
-- Install packages from requirements.txt - `pip install -r reguirements.txt`
-- Enable stereo mix on windows -> right click on the sound icon on the taskbar -> sounds -> recording -> stereo mix -> enable
-- Get an api key for azure cognitive services (preferred) or google speech api (you can use the default google key, but it is very limited)
-- Run the app, go to preferences and set the engine, key and language. Set stereo mix as the input device, if you want to transcribe the sounds you hear.
-- Press record to start recording
-- Press stop to stop
-- Transcription is stored to the specified path
-- Be aware that changing your default recording device might result in changing your current online meeting software default settings
-
-
-## UI
-
-Main app window
-
-![image info](./src/examples/images/main.JPG)
-
-Preferences window
-
-![image info](./src/examples/images/preferences.JPG)
-
-Recording
-
-![image info](./src/examples/images/recording.JPG)
-
-Transcribing
-
-![image info](./src/examples/images/transcription.JPG)
-
-Result prompt
-
-![image info](./src/examples/images/result.JPG)
-
-
-## App architecture
-
-The app was build using the MVVM pattern, with view being the user entry point, and the viewmodel serving as a data source and updating the model.
-The other-way communication is performed using decorator-like callbacks (expanding on top of each other) and asynchronous coroutines,
-e.g. the document writer. Speech recognition engines use the strategy pattern, inheriting from the abstract Engine class.
-
-## External libraries
-
-Libraries used are listed in the `requirements.txt` file:
-
-- Azure cognitive services and Speech Recognition - as speech recognition engines
-- sounddevice, soundfile and PyAudio - to handle recording and managing audio inputs
-- python-docx - to create transcription docx files
-- PySimpleGUIQt - for GUI
+Captionizer enables to create transcriptions of lectures, online meetings or videos in the docx format, 
+with a help of speech recognition engines. It can capture sounds from any audio input, or speakers output (stereo mix). 
+2 speech recognition engines are supported (Google and Azure).
 
 
 ## Tests and accuracy
@@ -91,3 +42,48 @@ GOOGLE / PL
 - [Prof. Jerzy Bralczyk: "Jak mówić, żeby nas słuchano"](https://youtu.be/TG4ZAGnlPOY?t=775) - 12:56-13:22 - see 
   [transcription fragment](https://github.com/MaciejMarkiewicz/captionizer/tree/master/src/examples/pl-azure.docx) - 5% mistakes -
   surprisingly good, mistakes are understandable
+
+
+## External libraries
+
+Libraries used are listed in the `requirements.txt` file:
+
+- azure-cognitive-services and SpeechRecognition - as speech recognition engines
+- sounddevice, soundfile and PyAudio - to handle recording and manage audio inputs
+- python-docx - to create transcription docx files
+- PySimpleGUIQt - for GUI
+
+
+## App architecture
+
+The app was build using the MVVM pattern, with view being the user entry point, and the viewmodel serving as a data source and updating the model.
+The other-way communication is performed using decorator-like callbacks (expanding on top of each other) and asynchronous coroutines,
+e.g. the document writer. Speech recognition engines use the strategy pattern, inheriting from the abstract Engine class.
+
+
+## Usage & UI
+
+- Install all dependencies - `pip install -r reguirements.txt`
+- Enable stereo mix in Windows -> right click on the sound icon on the taskbar -> sounds -> recording -> stereo mix -> enable
+- Get an api key for azure cognitive services (preferred) or google speech api (you can use the default google key, but it is very limited). 
+  Be aware that changing your default recording device might result in changing your current online meeting software default settings.
+- Run the app:
+
+![image info](./src/examples/images/main.JPG)
+
+- Go to preferences and set the engine, key and language. Set stereo mix as the input device, if you want to transcribe the sounds you hear:
+
+![image info](./src/examples/images/preferences.JPG)
+
+- Press record to start recording
+- Press "Finish recording" to stop:
+  
+![image info](./src/examples/images/recording.JPG)
+
+- Wait until transcription process finishes:
+
+![image info](./src/examples/images/transcription.JPG)
+
+- Transcription is stored to the specified path:
+  
+![image info](./src/examples/images/result.JPG)
