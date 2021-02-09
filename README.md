@@ -1,7 +1,7 @@
 # Captionizer
 
-Captionizer enables to create transcriptions of lectures, online meetings or videos in the docx format, 
-with a help of speech recognition engines. It can capture sounds from any audio input, or speakers output (stereo mix). 
+Captionizer enables to create transcriptions of lectures, online meetings or videos in the docx format. 
+It can capture sounds from any audio input, or speakers output (stereo mix). 
 2 speech recognition engines are supported (Google and Azure).
 
 
@@ -42,23 +42,6 @@ GOOGLE / PL
 - [Prof. Jerzy Bralczyk: "Jak mówić, żeby nas słuchano"](https://youtu.be/TG4ZAGnlPOY?t=775) - 12:56-13:22 - see 
   [transcription fragment](https://github.com/MaciejMarkiewicz/captionizer/tree/master/src/examples/pl-azure.docx) - 5% mistakes -
   surprisingly good, mistakes are understandable
-
-
-## External libraries
-
-Libraries used are listed in the `requirements.txt` file:
-
-- azure-cognitive-services and SpeechRecognition - as speech recognition engines
-- sounddevice, soundfile and PyAudio - to handle recording and manage audio inputs
-- python-docx - to create transcription docx files
-- PySimpleGUIQt - for GUI
-
-
-## App architecture
-
-The app was build using the MVVM pattern, with view being the user entry point, and the viewmodel serving as a data source and updating the model.
-The other-way communication is performed using decorator-like callbacks (expanding on top of each other) and asynchronous coroutines,
-e.g. the document writer. Speech recognition engines use the strategy pattern, inheriting from the abstract Engine class.
 
 
 ## Usage & UI
